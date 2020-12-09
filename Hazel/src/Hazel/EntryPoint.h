@@ -8,8 +8,8 @@ int main(int argc, char** argv)
 {
 	Hazel::Log::Init();
 	HZ_CORE_WARN("Initialized Log!");
-	int a = 5;
-	HZ_INFO("Hello! Var={0}", a);
+	int a = 4;
+	HZ_INFO("Hello! Var={0}", a << 3);
 
 	auto app = Hazel::CreateApplication();
 	app->Run();
