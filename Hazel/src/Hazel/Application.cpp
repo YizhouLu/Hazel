@@ -6,7 +6,6 @@ namespace Hazel {
 
 Application::Application()
 {
-    printf("This is the base Application!\n");
 }
 
 Application::~Application()
@@ -14,7 +13,7 @@ Application::~Application()
 }
 
 void Application::Run() {
-    while (true);
+    printf("Running!");
 }
 
 }
