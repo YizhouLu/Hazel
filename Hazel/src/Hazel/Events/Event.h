@@ -1,9 +1,7 @@
 #pragma once
 
+#include "hzpch.h"
 #include "Hazel/Core.h"
-
-#include <string>
-#include <functional>
 
 namespace Hazel {
 
@@ -44,7 +42,7 @@ public:
 	virtual EventType GetEventType() const = 0;	// override by the macro "EVENT_CLASS_TYPE"
 	virtual const char* GetName() const = 0;	// override by the macro "EVENT_CLASS_TYPE"
 	virtual int GetCategoryFlags() const = 0;	// override by the macro "EVENT_CLASS_CATEGORY"
-	virtual std::string ToString() const { return GetName(); } // override by each derived class
+	virtual std::string ToString() const { return GetName(); } // override by each derived class when applicable
 
 	inline bool IsInCategory(EventCategory category) {
 		return GetCategoryFlags() & category;
