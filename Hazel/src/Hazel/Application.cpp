@@ -55,7 +55,7 @@ void Application::OnEvent(Event& e) {
 
 void Application::Run() {
     while (m_Running) {
-        glClearColor(0.5, 0.5, 1.2, 1);
+        glClearColor((GLfloat)0.5, (GLfloat)0.5, (GLfloat)1.2, 1);
         glClear(GL_COLOR_BUFFER_BIT);
 
         for (Layer* layer : m_LayerStack) {
