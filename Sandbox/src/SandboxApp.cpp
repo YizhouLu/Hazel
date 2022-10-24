@@ -5,7 +5,7 @@
 class ExampleLayer : public Hazel::Layer {
 public:
     ExampleLayer()
-        : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+        : Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f)
     {
         /////////////////
         // VertexArray //
@@ -125,16 +125,33 @@ public:
         m_BlueShader.reset(new Hazel::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
     }
 
-    void OnUpdate() override {
-        // if (Hazel::Input::IsKeyPressed(HZ_KEY_TAB)) {
-        //     HZ_TRACE("Tab key is pressed (poll)!");
-        // }
+    void OnUpdate(Hazel::Timestep dt) override {
+        if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT)) {
+            m_CameraPosition.x -= m_CameraMoveSpeed * dt;
+        } 
+        else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT)) {
+            m_CameraPosition.x += m_CameraMoveSpeed * dt;
+        }
+
+        if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN)) {
+            m_CameraPosition.y -= m_CameraMoveSpeed * dt;
+        } 
+        else if (Hazel::Input::IsKeyPressed(HZ_KEY_UP)) {
+            m_CameraPosition.y += m_CameraMoveSpeed * dt;
+        }
+
+        if (Hazel::Input::IsKeyPressed(HZ_KEY_A)) {
+            m_CameraRotation += m_CameraRotationSpeed * dt;
+        }
+        else if (Hazel::Input::IsKeyPressed(HZ_KEY_D)) {
+            m_CameraRotation -= m_CameraRotationSpeed * dt;
+        }
 
         Hazel::RenderCommand::SetClearColor({ 0.5f, 0.5f, 1.2f, 1 });
         Hazel::RenderCommand::Clear();
 
-        m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-        m_Camera.SetRotation(45.0f);
+        m_Camera.SetPosition(m_CameraPosition);
+        m_Camera.SetRotation(m_CameraRotation);
 
         Hazel::Renderer::BeginScene(m_Camera);
 
@@ -168,6 +185,11 @@ private:
     std::shared_ptr<Hazel::VertexArray> m_SquareVertexArray;
 
     Hazel::OrthographicCamera m_Camera;
+    glm::vec3 m_CameraPosition;
+    float m_CameraMoveSpeed = 5.0f;
+
+    float m_CameraRotation = 0.0f;
+    float m_CameraRotationSpeed = 180.0f;
 };
 
 class Sandbox : public Hazel::Application {
