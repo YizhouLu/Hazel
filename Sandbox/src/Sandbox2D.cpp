@@ -11,11 +11,14 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+    HZ_PROFILE_FUNCTION();
+
     m_CheckerBoardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
 {
+    HZ_PROFILE_FUNCTION();
 }
 
 void Sandbox2D::OnUpdate(Hazel::Timestep dt)
@@ -23,10 +26,8 @@ void Sandbox2D::OnUpdate(Hazel::Timestep dt)
     HZ_PROFILE_FUNCTION();
 
     // Update
-    {
-        HZ_PROFILE_SCOPE("CameraController.OnUpdate");
-        m_CameraController.OnUpdate(dt);
-    }
+    m_CameraController.OnUpdate(dt);
+
 
     // Render
     {
