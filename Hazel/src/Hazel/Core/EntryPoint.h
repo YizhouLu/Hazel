@@ -1,4 +1,5 @@
 #pragma once
+#include "Hazel/Core/Core.h"
 
 #ifdef HZ_PLATFORM_WINDOWS
 
@@ -8,7 +9,6 @@ int main(int argc, char** argv) {
     Hazel::Log::Init();
     HZ_CORE_WARN("Initialize Log");
 
-    printf("Hazel Engine!\n");
     auto app = Hazel::CreateApplication();
     app->Run();
     delete app;

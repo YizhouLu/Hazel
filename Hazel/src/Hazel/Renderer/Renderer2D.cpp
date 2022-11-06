@@ -1,9 +1,9 @@
 #include "hzpch.h"
-#include "Renderer2D.h"
+#include "Hazel/Renderer/Renderer2D.h"
 
-#include "Shader.h"
-#include "VertexArray.h"
-#include "RenderCommand.h"
+#include "Hazel/Renderer/Shader.h"
+#include "Hazel/Renderer/VertexArray.h"
+#include "Hazel/Renderer/RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -30,8 +30,7 @@ void Renderer2D::Init()
 		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 	};
 
-    Ref<VertexBuffer> squareVertexBuffer;
-    squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+    Ref<VertexBuffer> squareVertexBuffer = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
     squareVertexBuffer->SetLayout({
         { Hazel::ShaderDataType::Float3, "a_Position" },
         { Hazel::ShaderDataType::Float2, "a_TexCoord" },
@@ -39,8 +38,7 @@ void Renderer2D::Init()
     s_Data->QuadVertexArray->AddVertexBuffer(squareVertexBuffer);
 
     uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-	Ref<IndexBuffer> squareIndexBuffer;
-	squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+	Ref<IndexBuffer> squareIndexBuffer = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 	s_Data->QuadVertexArray->SetIndexBuffer(squareIndexBuffer);
 
     s_Data->WhiteTexture = Texture2D::Create(1, 1);
