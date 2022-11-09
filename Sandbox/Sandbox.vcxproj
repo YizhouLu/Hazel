@@ -149,9 +149,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Hazel.log" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="assets\shaders\FlatColor.glsl" />
     <None Include="assets\shaders\Texture.glsl" />
     <None Include="HazelProfile-Runtime.json" />
