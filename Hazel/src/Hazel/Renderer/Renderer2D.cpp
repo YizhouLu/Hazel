@@ -281,6 +281,52 @@ void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& siz
 {
     HZ_PROFILE_FUNCTION();
 
+    constexpr glm::vec4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+    float textureIndex = 0.0f;
+    for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++) {
+        if (*s_Data.TextureSlots[i].get() == *texture.get()) {
+            textureIndex = (float)i;
+            break;
+        }
+    }
+
+    if (textureIndex == 0.0f) {
+        textureIndex = (float)s_Data.TextureSlotIndex;
+        s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+        s_Data.TextureSlotIndex++;
+    }
+
+    s_Data.QuadVertexBufferPtr->Position = position;
+    s_Data.QuadVertexBufferPtr->Color = whiteColor;
+    s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 0.0f };
+    s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+    s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+    s_Data.QuadVertexBufferPtr++;
+
+    s_Data.QuadVertexBufferPtr->Position = { position.x + size.x, position.y, 0.0f };
+    s_Data.QuadVertexBufferPtr->Color = whiteColor;
+    s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 0.0f };
+    s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+    s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+    s_Data.QuadVertexBufferPtr++;
+
+    s_Data.QuadVertexBufferPtr->Position = { position.x + size.x, position.y + size.y, 0.0f };
+    s_Data.QuadVertexBufferPtr->Color = whiteColor;
+    s_Data.QuadVertexBufferPtr->TexCoord = { 1.0f, 1.0f };
+    s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+    s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+    s_Data.QuadVertexBufferPtr++;
+
+    s_Data.QuadVertexBufferPtr->Position = { position.x, position.y + size.y, 0.0f };
+    s_Data.QuadVertexBufferPtr->Color = whiteColor;
+    s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 1.0f };
+    s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+    s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+    s_Data.QuadVertexBufferPtr++;
+
+    s_Data.QuadIndexCount += 6;
+
     s_Data.TextureShader->SetFloat4("u_Color", tintColor); // Bind white color by default
     s_Data.TextureShader->SetFloat("u_TilingFactor", tilingFactor);
     texture->Bind(0);
