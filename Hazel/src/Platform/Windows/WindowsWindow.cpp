@@ -43,7 +43,7 @@ void WindowsWindow::Init(const WindowProps& props) {
         HZ_PROFILE_SCOPE("glfwInit");
 
     	int success = glfwInit();
-    	HZ_CORE_ASSERT(success, "Could not intialize GLFW!");
+    	HZ_CORE_ASSERT(success, "Could not initialize GLFW!");
         glfwSetErrorCallback(GLFWErrorCallback);
     }
     
