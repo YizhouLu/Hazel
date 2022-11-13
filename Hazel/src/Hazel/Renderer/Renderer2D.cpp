@@ -104,6 +104,8 @@ void Renderer2D::Init()
 void Renderer2D::Shutdown()
 {
     HZ_PROFILE_FUNCTION();
+
+    delete[] s_Data.QuadVertexBufferBase;
 }
 
 void Renderer2D::BeginScene(const OrthographicCamera& camera)
@@ -123,7 +125,7 @@ void Renderer2D::EndScene()
 {
     HZ_PROFILE_FUNCTION();
 
-    uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
+    uint32_t dataSize = uint32_t((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
     s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
     Flush();
@@ -131,6 +133,10 @@ void Renderer2D::EndScene()
 
 void Renderer2D::Flush()
 {
+    if (s_Data.QuadIndexCount == 0) {
+        return;
+    }
+
     for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++) {
         s_Data.TextureSlots[i]->Bind(i);
     }
@@ -193,7 +199,6 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, cons
     HZ_PROFILE_FUNCTION();
 
     constexpr size_t quadVertexCount = 4;
-    constexpr glm::vec4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
     constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f },{ 1.0f, 0.0f },{ 1.0f, 1.0f },{ 0.0f, 1.0f } };
 
     if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices) {
@@ -222,7 +227,7 @@ void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, cons
 
     for (size_t i = 0; i < quadVertexCount; i++) {
         s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPosition[i];
-        s_Data.QuadVertexBufferPtr->Color = whiteColor;
+        s_Data.QuadVertexBufferPtr->Color = tintColor;
         s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
         s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
         s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
@@ -280,7 +285,6 @@ void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& siz
     HZ_PROFILE_FUNCTION();
 
     constexpr size_t quadVertexCount = 4;
-	constexpr glm::vec4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
     if (s_Data.QuadIndexCount >= Renderer2DStorage::MaxIndices) {
@@ -310,7 +314,7 @@ void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& siz
 
     for (size_t i = 0; i < quadVertexCount; i++) {
         s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPosition[i];
-        s_Data.QuadVertexBufferPtr->Color = whiteColor;
+        s_Data.QuadVertexBufferPtr->Color = tintColor;
         s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
         s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
         s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;

@@ -51,6 +51,11 @@ void Application::PushOverlay(Layer* overlay)
     overlay->OnAttach();
 }
 
+void Application::Close()
+{
+    m_Running = false;
+}
+
 void Application::OnEvent(Event& e) {
     HZ_PROFILE_FUNCTION();
 
@@ -59,10 +64,10 @@ void Application::OnEvent(Event& e) {
     dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(Application::OnWindowResize));
 
     for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
-        (*it)->OnEvent(e);
         if (e.Handled) {
             break;
         }
+        (*it)->OnEvent(e);
     }
 }
 

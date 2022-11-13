@@ -2,7 +2,7 @@
 
 // For use by Hazel Application
 
-#include "Hazel/Core/Core.h"
+#include "Hazel/Core/Base.h"
 
 #include "Hazel/Core/Application.h"
 #include "Hazel/Core/Layer.h"

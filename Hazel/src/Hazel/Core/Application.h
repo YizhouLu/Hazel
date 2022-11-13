@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hazel/Core/Core.h"
+#include "Hazel/Core/Base.h"
 
 #include "Hazel/Core/Window.h"
 #include "Hazel/Core/LayerStack.h"
@@ -27,6 +27,8 @@ public:
     void PushOverlay(Layer* overlay);
 
     inline Window& GetWindow() { return *m_Window; }
+
+    void Close();
 
     inline static Application& Get() { return *s_Instance; }
 private:
