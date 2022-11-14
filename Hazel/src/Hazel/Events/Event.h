@@ -38,6 +38,8 @@ enum EventCategory
 
 class Event {
 public:
+	virtual ~Event() = default;
+
 	bool Handled = false;
 
 	virtual EventType GetEventType() const = 0;	// override by the macro "EVENT_CLASS_TYPE"

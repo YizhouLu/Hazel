@@ -14,6 +14,11 @@ void Sandbox2D::OnAttach()
     HZ_PROFILE_FUNCTION();
 
     m_CheckerBoardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
+
+    Hazel::FrameBufferSpecification fbSpec;
+    fbSpec.Width = 1280;
+    fbSpec.Height = 720;
+    m_FrameBuffer = Hazel::FrameBuffer::Create(fbSpec);
 }
 
 void Sandbox2D::OnDetach()
@@ -33,6 +38,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep dt)
     Hazel::Renderer2D::ResetStats();
     {
         HZ_PROFILE_SCOPE("Renderer Prep");
+        m_FrameBuffer->Bind();
         Hazel::RenderCommand::SetClearColor({ 0.9f, 1.0f, 0.75f, 1.0f });
         Hazel::RenderCommand::Clear();
     }
@@ -60,6 +66,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep dt)
 			}
 		}
 		Hazel::Renderer2D::EndScene();
+        m_FrameBuffer->Unbind();
     }
 }
 
@@ -67,7 +74,7 @@ void Sandbox2D::OnImGuiRender()
 {
     HZ_PROFILE_FUNCTION();
 
-    static bool dockingEnable = false;
+    static bool dockingEnable = true;
     if (dockingEnable) {
         static bool dockspaceOpen = true;
         static bool opt_fullscreen_persistant = true;
@@ -136,8 +143,8 @@ void Sandbox2D::OnImGuiRender()
 
         ImGui::ColorEdit4("Color Settings", glm::value_ptr(m_SquareColor));
 
-        uint32_t textureID = m_CheckerBoardTexture->GetRendererID();
-        ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f });
+        uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+        ImGui::Image((void*)textureID, ImVec2{ 1280, 720 });
         ImGui::End();
 
         ImGui::End();
@@ -155,7 +162,7 @@ void Sandbox2D::OnImGuiRender()
         ImGui::ColorEdit4("Color Settings", glm::value_ptr(m_SquareColor));
 
         uint32_t textureID = m_CheckerBoardTexture->GetRendererID();
-        ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f });
+        ImGui::Image((void*)textureID, ImVec2{ 1280, 720 });
         ImGui::End();
     }
 }
