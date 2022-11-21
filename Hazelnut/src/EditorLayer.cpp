@@ -10,7 +10,7 @@ EditorLayer::EditorLayer()
 {
 }
 
-void EditorLayer::OnAttach()
+void EditorLayer::OnAttach() 
 {
     HZ_PROFILE_FUNCTION();
 
