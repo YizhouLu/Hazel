@@ -1,6 +1,6 @@
 workspace "Hazel"
 	architecture "x86_64"
-	startproject "Sandbox"
+	startproject "Hazelnut"
 
 	configurations
 	{
@@ -8,7 +8,7 @@ workspace "Hazel"
 		"Release",
 		"Dist"
 	}
-
+	
 	flags
 	{
 		"MultiProcessorCompile"
@@ -28,7 +28,6 @@ group "Dependencies"
 	include "Hazel/vendor/GLFW"
 	include "Hazel/vendor/Glad"
 	include "Hazel/vendor/imgui"
-
 group ""
 
 project "Hazel"
@@ -117,9 +116,51 @@ project "Sandbox"
 		"%{prj.name}/src/**.cpp"
 	}
 
-	defines
+	includedirs
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+		"Hazel/vendor/spdlog/include",
+		"Hazel/src",
+		"Hazel/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Hazel"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		
+	filter "configurations:Debug"
+		defines "HZ_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "HZ_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "HZ_DIST"
+		runtime "Release"
+		optimize "on"
+
+project "Hazelnut"
+	location "Hazelnut"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
@@ -137,7 +178,7 @@ project "Sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
-
+		
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
 		runtime "Debug"

@@ -2,11 +2,12 @@
 
 #include "Hazel.h"
 
-class Sandbox2D : public Hazel::Layer
+namespace Hazel {
+class EditorLayer : public Hazel::Layer
 {
 public:
-    Sandbox2D();
-    virtual ~Sandbox2D() = default;
+    EditorLayer();
+    virtual ~EditorLayer() = default;
 
     virtual void OnAttach() override;
     virtual void OnDetach() override;
@@ -20,8 +21,10 @@ private:
     // Temp
     // Hazel::Ref<Hazel::VertexArray> m_SquareVertexArray;
     // Hazel::Ref<Hazel::Shader> m_FlatColorShader;
+    Hazel::Ref<Hazel::FrameBuffer> m_FrameBuffer;
 
     Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
 
     glm::vec4 m_SquareColor;
 };
+}
