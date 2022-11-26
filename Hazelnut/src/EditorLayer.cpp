@@ -32,8 +32,9 @@ void EditorLayer::OnUpdate(Hazel::Timestep dt)
     HZ_PROFILE_FUNCTION();
 
     // Update
-    m_CameraController.OnUpdate(dt);
-
+    if (m_ViewportFocused) {
+        m_CameraController.OnUpdate(dt);
+    }
 
     // Render
     Hazel::Renderer2D::ResetStats();
@@ -146,6 +147,11 @@ void EditorLayer::OnImGuiRender()
     
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
     ImGui::Begin("Viewport");
+
+    m_ViewportFocused = ImGui::IsWindowFocused();
+    m_ViewportHovered = ImGui::IsWindowHovered();
+    Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+
     ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
     if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize)) {
         m_FrameBuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
