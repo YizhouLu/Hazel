@@ -23,6 +23,9 @@ private:
     // Hazel::Ref<Hazel::Shader> m_FlatColorShader;
     Hazel::Ref<Hazel::FrameBuffer> m_FrameBuffer;
 
+    Ref<Scene> m_ActiveScene;
+    entt::entity m_SquareEntity;
+
     Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
 
     bool m_ViewportFocused = false;
