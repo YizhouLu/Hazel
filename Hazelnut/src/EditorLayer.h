@@ -24,7 +24,7 @@ private:
     Hazel::Ref<Hazel::FrameBuffer> m_FrameBuffer;
 
     Ref<Scene> m_ActiveScene;
-    entt::entity m_SquareEntity;
+    Entity m_SquareEntity;
 
     Hazel::Ref<Hazel::Texture2D> m_CheckerBoardTexture;
 
@@ -32,6 +32,6 @@ private:
     bool m_ViewportHovered = false;
     glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 
-    glm::vec4 m_SquareColor;
+    // glm::vec4 m_SquareColor;
 };
 }
