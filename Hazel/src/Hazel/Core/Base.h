@@ -68,7 +68,7 @@
 
 #define BIT(x) (1 << x)
 
-#define HZ_BIND_EVENT_FN(fcn) std::bind(&fcn, this, std::placeholders::_1)
+#define HZ_BIND_EVENT_FN(fcn) [this](auto&&... args) -> decltype(auto) { return this->fcn(std::forward<decltype(args)>(args)...); }
 
 namespace Hazel {
 template<typename T>
