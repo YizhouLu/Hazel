@@ -6,7 +6,7 @@
 
 namespace Hazel {
 EditorLayer::EditorLayer()
-    : Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f)//, m_SquareColor({ 1.0f, 0.5f, 0.25f, 1.0f })
+    : Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f)
 {
 }
 
@@ -35,6 +35,40 @@ void EditorLayer::OnAttach()
     m_SecondCamera = m_ActiveScene->CreateEntity("Clip-Space Entity");
     auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
     cc.Primary = false;
+
+
+    class CameraController : public ScriptableEntity
+    {
+    public:
+        void OnCreate() {
+            
+        }
+
+        void OnDestroy() {
+
+        }
+
+        void OnUpdate(Timestep dt) {
+            auto& transform = GetComponent<TransformComponent>().Transform;
+            float speed = 5.0f;
+
+            if (Input::IsKeyPressed(HZ_KEY_LEFT)) {
+                transform[3][0] -= speed * dt;
+            }
+            else if (Input::IsKeyPressed(HZ_KEY_RIGHT)) {
+                transform[3][0] += speed * dt;
+            }
+
+            if (Input::IsKeyPressed(HZ_KEY_DOWN)) {
+                transform[3][1] -= speed * dt;
+            }
+            else if (Input::IsKeyPressed(HZ_KEY_UP)) {
+                transform[3][1] += speed * dt;
+            }
+        }
+
+    };
+    m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 }
 
 void EditorLayer::OnDetach()
@@ -64,35 +98,8 @@ void EditorLayer::OnUpdate(Timestep dt)
     // Render
     Renderer2D::ResetStats();
     m_FrameBuffer->Bind();
-    RenderCommand::SetClearColor({ 0.7f, 1.0f, 0.5f, 1.0f });
+    RenderCommand::SetClearColor({ 0.66f, 0.51f, 0.78f, 1.0f });
     RenderCommand::Clear();
-
-
-	// {
-	//     static float rotation = 0.0f;
-	//     rotation += dt * 20.0f;
-	// 
-	//     HZ_PROFILE_SCOPE("Renderer Draw");
-	//     Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	//     Hazel::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, m_SquareColor);
-	//     Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, m_SquareColor);
-	//     Hazel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-	//     Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerBoardTexture, 10.0f);
-	//     Hazel::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerBoardTexture, 20.0f);
-	//     Hazel::Renderer2D::EndScene();
-	// 
-	//     Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	// 	for (float y = -5.0f; y < 5.0f; y += 0.5f)
-	// 	{
-	// 		for (float x = -5.0f; x < 5.0f; x += 0.5f)
-	// 		{
-	// 			glm::vec4 color = { 0.4f, (x + 5.0f) / 10.0f, (y + 5.0f) / 10.0f, 0.3f };
-	// 			Hazel::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-	// 		}
-	// 	}
-	// 	Hazel::Renderer2D::EndScene();
-	//     m_FrameBuffer->Unbind();
-	// }
 
     // Update scene
     m_ActiveScene->OnUpdate(dt);
