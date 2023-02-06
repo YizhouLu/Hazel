@@ -108,6 +108,19 @@ void Renderer2D::Shutdown()
     delete[] s_Data.QuadVertexBufferBase;
 }
 
+void Renderer2D::BeginScene(const OrthographicCamera& camera)
+{
+    HZ_PROFILE_FUNCTION();
+
+    s_Data.TextureShader->Bind();
+    s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+    s_Data.QuadIndexCount = 0;
+    s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+    s_Data.TextureSlotIndex = 1;
+}
+
 void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 {
     HZ_PROFILE_FUNCTION();
@@ -116,19 +129,6 @@ void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 
     s_Data.TextureShader->Bind();
     s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
-
-    s_Data.QuadIndexCount = 0;
-    s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-    s_Data.TextureSlotIndex = 1;
-}
-
-void Renderer2D::BeginScene(const OrthographicCamera& camera)
-{
-    HZ_PROFILE_FUNCTION();
-
-    s_Data.TextureShader->Bind();
-    s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
     s_Data.QuadIndexCount = 0;
     s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
