@@ -40,16 +40,16 @@ void EditorLayer::OnAttach()
     class CameraController : public ScriptableEntity
     {
     public:
-        void OnCreate() {
+        virtual void OnCreate() override {
             auto& transform = GetComponent<TransformComponent>().Transform;
             transform[3][0] = rand() % 10 - 5.0f;
         }
 
-        void OnDestroy() {
+        virtual void OnDestroy() override {
 
         }
 
-        void OnUpdate(Timestep dt) {
+        virtual void OnUpdate(Timestep dt) override {
             auto& transform = GetComponent<TransformComponent>().Transform;
 
             float speed = 5.0f;
@@ -73,6 +73,8 @@ void EditorLayer::OnAttach()
 
     m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
     m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+    m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 }
 
 void EditorLayer::OnDetach()
@@ -175,6 +177,8 @@ void EditorLayer::OnImGuiRender()
         }
         ImGui::EndMenuBar();
     }
+
+    m_SceneHierarchyPanel.OnImGuiRender();
     
     ImGui::Begin("Settings");
     
