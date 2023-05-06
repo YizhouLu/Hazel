@@ -29,14 +29,14 @@ void SceneHierarchyPanel::OnImGuiRender()
 		m_SelectionContext = {};
 	}
 
-ImGui::End();
-
-ImGui::Begin("Properties");
-if (m_SelectionContext) {
-	DrawComponents(m_SelectionContext);
-}
-
-ImGui::End();
+	ImGui::End();
+	
+	ImGui::Begin("Properties");
+	if (m_SelectionContext) {
+		DrawComponents(m_SelectionContext);
+	}
+	
+	ImGui::End();
 }
 
 void SceneHierarchyPanel::DrawEntityNode(Entity entity)
@@ -151,6 +151,16 @@ void SceneHierarchyPanel::DrawComponents(Entity entity)
 				ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.FixedAspectRatio);
 			}
 
+			ImGui::TreePop();
+		}
+	}
+
+	if (entity.HasComponent<SpriteRendererComponent>()) {
+		bool opened = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(),
+			ImGuiTreeNodeFlags_DefaultOpen, "Sprite Renderer");
+		if (opened) {
+			auto& src = entity.GetComponent<SpriteRendererComponent>();
+			ImGui::ColorEdit4("Color", glm::value_ptr(src.Color));
 			ImGui::TreePop();
 		}
 	}
