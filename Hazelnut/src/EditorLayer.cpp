@@ -44,8 +44,8 @@ void EditorLayer::OnAttach()
     {
     public:
         virtual void OnCreate() override {
-            auto& transform = GetComponent<TransformComponent>().Transform;
-            transform[3][0] = rand() % 10 - 5.0f;
+            auto& translation = GetComponent<TransformComponent>().Translation;
+            translation.x = rand() % 10 - 5.0f;
         }
 
         virtual void OnDestroy() override {
@@ -53,22 +53,22 @@ void EditorLayer::OnAttach()
         }
 
         virtual void OnUpdate(Timestep dt) override {
-            auto& transform = GetComponent<TransformComponent>().Transform;
+            auto& translation = GetComponent<TransformComponent>().Translation;
 
             float speed = 5.0f;
 
             if (Input::IsKeyPressed(HZ_KEY_LEFT)) {
-                transform[3][0] -= speed * dt;
+                translation.x -= speed * dt;
             }
             else if (Input::IsKeyPressed(HZ_KEY_RIGHT)) {
-                transform[3][0] += speed * dt;
+                translation.x += speed * dt;
             }
 
             if (Input::IsKeyPressed(HZ_KEY_DOWN)) {
-                transform[3][1] -= speed * dt;
+                translation.y -= speed * dt;
             }
             else if (Input::IsKeyPressed(HZ_KEY_UP)) {
-                transform[3][1] += speed * dt;
+                translation.y += speed * dt;
             }
         }
 
